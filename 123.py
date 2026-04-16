@@ -1,1 +1,1 @@
-asfa
+print(1)
