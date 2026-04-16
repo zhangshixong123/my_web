@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 科研甘特图 - 交互式</title>
+    <style>
+        :root {
+            --border-color: #e0e0e0;
+            --bg-color: #f8f9fa;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            /* 防止拖拽时选中文本 */
+            user-select: none;
+        }
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .add-btn {
+            background-color: #1AAD19;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .add-btn:hover { background-color: #128c11; }
+
+        .gantt-container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .gantt-header, .task-row {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .task-row:last-child {
+            border-bottom: none;
+        }
+
+        /* 左侧列样式 */
+        .left-col {
+            padding: 15px;
+            border-right: 2px solid #ccc;
+            background-color: #fafafa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .left-col-header {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #eee;
+            padding: 15px;
+            border-right: 2px solid #ccc;
+        }
+        .task-name-input {
+            flex: 1;
+            border: 1px solid transparent;
+            padding: 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            background: transparent;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .task-name-input:focus, .task-name-input:hover {
+            border-color: #ccc;
+            background: #fff;
+        }
+        .color-picker {
+            border: none;
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .delete-btn {
+            color: #ff4d4f;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 5px;
+        }
+
+        /* 右侧列（时间线）样式 */
+        .right-col {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            position: relative;
+        }
+        .month-header {
+            text-align: center;
+            padding: 15px 0;
+            font-weight: 600;
+            border-right: 1px dashed var(--border-color);
+            background-color: #eee;
+        }
+        .month-cell {
+            border-right: 1px dashed var(--border-color);
+            position: relative;
+            min-height: 60px;
+        }
+
+        /* 甘特图色块与拖拽手柄 */
+        .bar-container {
+            position: absolute;
+            top: 15px;
+            bottom: 15px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            pointer-events: none;
+        }
+        .gantt-bar {
+            position: relative;
+            height: 100%;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            pointer-events: auto;
+            display: flex;
+            transition: background-color 0.3s;
+        }
+
+        /* 色块内的可编辑文本 */
+        .bar-text-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: grab;
+        }
+        .bar-text-container:active {
+            cursor: grabbing;
+        }
+
+        /* 左右边缘的调整大小区域 */
+        .resize-handle {
+            width: 10px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 10;
+            cursor: ew-resize;
+        }
+        .resize-handle.left { left: 0; }
+        .resize-handle.right { right: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="header-controls">
+        <div class="title">2026 年度科研计划甘特图</div>
+        <button class="add-btn" onclick="addNewEvent()">+ 添加事件</button>
+    </div>
+
+    <div class="gantt-container">
+        <div class="gantt-header">
+            <div class="left-col-header">任务名称</div>
+            <div class="right-col" id="monthsHeader"></div>
+        </div>
+
+        <div id="ganttBody"></div>
+    </div>
+
+    <script>
+    // 匹配用户要求的数组：X月
+const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+// 初始数据集（后备）
+let defaultEvents = [
+    { id: 1, name: "文章（PINN+DAS）", start: 4, end: 6, color: "#4A90E2" },
+    { id: 2, name: "省基金", start: 7, end: 9, color: "#50E3C2" },
+    { id: 3, name: "开放基金", start: 7, end: 9, color: "#F5A623" },
+    { id: 4, name: "市基金", start: 9, end: 11, color: "#9013FE" },
+    { id: 5, name: "青C", start: 9, end: 12, color: "#E02020" }
+];
+
+let events = [];
+
+// --- 数据持久化 (本地存储) ---
+// 将当前状态保存到浏览器内存
+function saveToLocal() {
+    localStorage.setItem('myResearchGantt2026_CN', JSON.stringify(events));
+}
+
+// 从浏览器内存加载状态
+function loadFromLocal() {
+    const savedData = localStorage.getItem('myResearchGantt2026_CN');
+    if (savedData) {
+        events = JSON.parse(savedData);
+    } else {
+        events = [...defaultEvents]; // 如果没有保存记录则使用默认值
+    }
+}
+
+// --- 拖拽状态变量 ---
+let dragState = {
+    active: false,
+    eventId: null,
+    type: null,
+    startX: 0,
+    initialStart: 0,
+    initialEnd: 0,
+    colWidth: 0
+};
+
+// --- 初始化 ---
+function initGantt() {
+    loadFromLocal(); // 渲染前加载数据
+    renderMonthsHeader();
+    renderTasks();
+    setupGlobalMouseEvents();
+}
+
+function renderMonthsHeader() {
+    const headerRow = document.getElementById('monthsHeader');
+    headerRow.innerHTML = '';
+    monthNames.forEach(month => {
+        const div = document.createElement('div');
+        div.className = 'month-header';
+        div.innerText = month;
+        headerRow.appendChild(div);
+    });
+}
+
+function renderTasks() {
+    const body = document.getElementById('ganttBody');
+    body.innerHTML = '';
+
+    events.forEach(event => {
+        const row = document.createElement('div');
+        row.className = 'task-row';
+
+        // 左侧列：交互式标题和颜色
+        const leftCol = document.createElement('div');
+        leftCol.className = 'left-col';
+        leftCol.innerHTML = `
+            <input type="color" class="color-picker" value="${event.color}" onchange="updateEvent(${event.id}, 'color', this.value)">
+            <input type="text" class="task-name-input" value="${event.name}" oninput="updateEventName(${event.id}, this.value)" onblur="saveToLocal()">
+            <button class="delete-btn" onclick="deleteEvent(${event.id})">✖</button>
+        `;
+
+        // 右侧列：时间线和可拖拽色块
+        const rightCol = document.createElement('div');
+        rightCol.className = 'right-col';
+        rightCol.id = `right-col-${event.id}`;
+
+        // 背景网格
+        for(let i=0; i<12; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'month-cell';
+            rightCol.appendChild(cell);
+        }
+
+        // 甘特图色块
+        const spanLength = (event.end - event.start) + 1;
+        const barContainer = document.createElement('div');
+        barContainer.className = 'bar-container';
+
+        if (event.start <= event.end) {
+            barContainer.innerHTML = `
+                <div class="gantt-bar" id="bar-${event.id}" style="grid-column: ${event.start} / span ${spanLength}; background-color: ${event.color};">
+                    <div class="resize-handle left" onmousedown="startDrag(event, ${event.id}, 'left')"></div>
+                    <div class="bar-text-container" onmousedown="startDrag(event, ${event.id}, 'move')">
+                        <span id="bar-text-${event.id}">${event.name}</span>
+                    </div>
+                    <div class="resize-handle right" onmousedown="startDrag(event, ${event.id}, 'right')"></div>
+                </div>
+            `;
+        }
+
+        rightCol.appendChild(barContainer);
+        row.appendChild(leftCol);
+        row.appendChild(rightCol);
+        body.appendChild(row);
+    });
+}
+
+// --- 核心功能 ---
+function updateEventName(id, value) {
+    const event = events.find(e => e.id === id);
+    if(event) {
+        event.name = value;
+        const barText = document.getElementById(`bar-text-${id}`);
+        if (barText) barText.innerText = value;
+        // 由 onblur 事件处理保存，防止输入时卡顿
+    }
+}
+
+function updateEvent(id, field, value) {
+    const event = events.find(e => e.id === id);
+    if(event) {
+        event[field] = value;
+        saveToLocal(); // 自动保存
+        renderTasks();
+    }
+}
+
+function addNewEvent() {
+    events.push({
+        id: Date.now(),
+        name: "新任务",
+        start: 1,
+        end: 3,
+        color: "#6c757d"
+    });
+    saveToLocal(); // 自动保存
+    renderTasks();
+}
+
+function deleteEvent(id) {
+    events = events.filter(e => e.id !== id);
+    saveToLocal(); // 自动保存
+    renderTasks();
+}
+
+// --- 拖放逻辑 ---
+function startDrag(e, id, type) {
+    e.preventDefault();
+    const eventObj = events.find(ev => ev.id === id);
+    if (!eventObj) return;
+
+    const rightCol = document.getElementById(`right-col-${id}`);
+
+    dragState = {
+        active: true,
+        eventId: id,
+        type: type,
+        startX: e.clientX,
+        initialStart: eventObj.start,
+        initialEnd: eventObj.end,
+        colWidth: rightCol.offsetWidth / 12
+    };
+}
+
+function setupGlobalMouseEvents() {
+    document.addEventListener('mousemove', (e) => {
+        if (!dragState.active) return;
+
+        const deltaX = e.clientX - dragState.startX;
+        const deltaMonths = Math.round(deltaX / dragState.colWidth);
+        const eventObj = events.find(ev => ev.id === dragState.eventId);
+
+        if (!eventObj) return;
+
+        let newStart = dragState.initialStart;
+        let newEnd = dragState.initialEnd;
+
+        if (dragState.type === 'left') {
+            newStart += deltaMonths;
+            if (newStart < 1) newStart = 1;
+            if (newStart > eventObj.end) newStart = eventObj.end;
+        }
+        else if (dragState.type === 'right') {
+            newEnd += deltaMonths;
+            if (newEnd > 12) newEnd = 12;
+            if (newEnd < eventObj.start) newEnd = eventObj.start;
+        }
+        else if (dragState.type === 'move') {
+            const length = dragState.initialEnd - dragState.initialStart;
+            newStart += deltaMonths;
+            newEnd += deltaMonths;
+
+            if (newStart < 1) {
+                newStart = 1;
+                newEnd = newStart + length;
+            }
+            if (newEnd > 12) {
+                newEnd = 12;
+                newStart = newEnd - length;
+            }
+        }
+
+        eventObj.start = newStart;
+        eventObj.end = newEnd;
+        updateBarVisuals(eventObj);
+    });
+
+    // 拖拽停止时自动保存
+    document.addEventListener('mouseup', () => {
+        if (dragState.active) {
+            dragState.active = false;
+            saveToLocal(); // 将新位置保存到浏览器
+            renderTasks(); // 重新渲染以确保完美对齐
+        }
+    });
+}
+
+function updateBarVisuals(eventObj) {
+    const bar = document.getElementById(`bar-${eventObj.id}`);
+    if (bar) {
+        const spanLength = (eventObj.end - eventObj.start) + 1;
+        bar.style.gridColumn = `${eventObj.start} / span ${spanLength}`;
+    }
+}
+
+// 启动
+window.onload = initGantt;
+
+    </script>
+</body>
+</html>
