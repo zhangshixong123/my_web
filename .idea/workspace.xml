@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3dad434a-1ee8-4368-bdb1-fb32ad261c22" name="Changes" comment="orange" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/zhangshixiong/Desktop/my_web" value="3LafK8Yyqdyud8JNdNNunHHaSlY" />
+    </persistenceIdMap>
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="10" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "zhangshixong123"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/zhangshixong123/my_web.git",
+    "accountId": "d4fb3953-3555-4c7d-85b3-d780171ccd0c"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0063457218465333" />
+      <entry key="MS500" value="1.3646169288426198" />
+      <entry key="S2" value="2.1712679212045805" />
+      <entry key="S5" value="3.27603020882822" />
+      <entry key="S10" value="4.247499406355298" />
+      <entry key="S30" value="5.857161301477814" />
+      <entry key="S60" value="7.007720011695755" />
+      <entry key="M2" value="8.106746365668752" />
+      <entry key="M5" value="9.11046586116363" />
+      <entry key="M10" value="9.529075320730174" />
+      <entry key="M15" value="9.679884815331693" />
+      <entry key="M30" value="9.83676637608088" />
+      <entry key="H1" value="9.917571169064582" />
+      <entry key="H2" value="9.958580282508773" />
+      <entry key="H4" value="9.97923852566965" />
+      <entry key="D1" value="9.996532560689257" />
+      <entry key="W1" value="9.999504475033744" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.972151457704181" />
+      <entry key="MS500" value="1.3561937647797395" />
+      <entry key="S2" value="2.1680596237579923" />
+      <entry key="S5" value="3.274008150661483" />
+      <entry key="S10" value="4.246130548020621" />
+      <entry key="S30" value="5.856487844219458" />
+      <entry key="S60" value="7.00730005216469" />
+      <entry key="M2" value="8.106495307623502" />
+      <entry key="M5" value="9.110350160852745" />
+      <entry key="M10" value="9.529014257425523" />
+      <entry key="M15" value="9.679843332527764" />
+      <entry key="M30" value="9.836745231551808" />
+      <entry key="H1" value="9.917560492869796" />
+      <entry key="H2" value="9.958574918024553" />
+      <entry key="H4" value="9.979235836779614" />
+      <entry key="D1" value="9.996532111613215" />
+      <entry key="W1" value="9.999504410857247" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3LafK8SNt6gElfoIn4Aq5bbWCis" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/zhangshixiong/Desktop/my_web",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-PY-262.8665.369" />
+        <option value="bundled-python-sdk-6fa658e1df1a-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.8665.369" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3dad434a-1ee8-4368-bdb1-fb32ad261c22" name="Changes" comment="" />
+      <created>1793697032738</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1793697032738</updated>
+      <workItem from="1793697033900" duration="2256000" />
+    </task>
+    <task id="LOCAL-00001" summary="orange">
+      <option name="closed" value="true" />
+      <created>1793697307274</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1793697307275</updated>
+    </task>
+    <task id="LOCAL-00002" summary="apple">
+      <option name="closed" value="true" />
+      <created>1793697326849</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1793697326849</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="orange" />
+    <MESSAGE value="apple" />
+    <option name="LAST_COMMIT_MESSAGE" value="apple" />
+  </component>
+</project>
